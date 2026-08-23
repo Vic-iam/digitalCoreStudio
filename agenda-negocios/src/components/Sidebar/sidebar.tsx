@@ -36,7 +36,7 @@ export default function Sidebar() {
         </NavLink>
 
         <NavLink to="/turnos" className={({ isActive }) => isActive ? "active" : ""}>
-          <CalendarDays size={18} /> Turnos
+          <CalendarDays size={18} /> Agenda
         </NavLink>
 
         <NavLink to="/servicios" className={({ isActive }) => isActive ? "active" : ""}>

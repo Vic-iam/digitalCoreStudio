@@ -324,6 +324,10 @@ tr:last-child td {
 .auth-card > p { color: #728078; }
 .auth-form { display: grid; gap: 18px; margin-top: 26px; }
 .auth-form button { width: 100%; }
+.password-field { position: relative; display: block; }
+.password-field input { padding-right: 46px; }
+.password-toggle { position: absolute; top: 50%; right: 8px; width: 32px !important; height: 32px; display: grid; place-items: center; transform: translateY(-50%); border: 0; border-radius: 5px; color: #728078; background: transparent; padding: 0; }
+.password-toggle:hover { color: #19352d; background: #e5f1e6; }
 .loading-message { color: #506057; }
 .settings-panel { display: flex; gap: 24px; align-items: flex-start; max-width: 720px; }
 .settings-avatar { width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; color: #19352d; background: #edc85b; font: 700 25px 'Space Grotesk'; flex-shrink: 0; }
