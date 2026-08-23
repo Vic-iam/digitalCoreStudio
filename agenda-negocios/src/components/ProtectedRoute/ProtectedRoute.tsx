@@ -5,7 +5,7 @@ export default function ProtectedRoute() {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <p>Cargando sesión...</p>;
+    return <main className="auth-page"><p className="loading-message">Cargando sesión...</p></main>;
   }
 
   if (!user) {

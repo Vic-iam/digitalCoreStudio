@@ -4,7 +4,6 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Appointments from "./pages/Appointments";
 import Services from "./pages/Services";
@@ -12,6 +11,8 @@ import Clients from "./pages/Clients";
 import Settings from "./pages/Settings";
 import DashboardLayout from "./layouts/DashboardLayout";
 import CreateBusiness from "./pages/CreateBusiness";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/recuperar-contrasena" element={<ForgotPassword />} />
+          <Route path="/restablecer-contrasena" element={<ResetPassword />} />
 
           <Route element={<ProtectedRoute />}>
             <Route path="/crear-negocio" element={<CreateBusiness />} />

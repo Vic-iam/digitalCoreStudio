@@ -1,15 +1,13 @@
 import { useState, type FormEvent } from "react";
-
-import { Link, useNavigate } from "react-router";
-
+import { useNavigate } from "react-router";
+import { Link } from "react-router";
 import { supabase } from "../lib/supabase";
-
 import { getMyBusiness } from "../services/businesses.service";
 
 export default function Login() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,43 +18,64 @@ export default function Login() {
     setErrorMessage("");
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      // Si el usuario escribe solamente "admin123",
+      // lo convertimos en el correo interno de Supabase.
+      const internalEmail = username.includes("@")
+        ? username
+        : `${username}@cuentas.tudominio.com`;
 
-    setLoading(false);
+      const { error } = await supabase.auth.signInWithPassword({
+        email: internalEmail,
+        password,
+      });
 
-    if (error) {
-      setErrorMessage(error.message);
-      return;
+      if (error) {
+        setErrorMessage(error.message);
+        return;
+      }
+
+      const business = await getMyBusiness();
+
+      if (business) {
+        navigate("/dashboard", {
+          replace: true,
+        });
+      } else {
+        // Por ahora no permitimos crear negocios desde el login.
+        navigate("/", {
+          replace: true,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Ocurrió un error al iniciar sesión.");
+    } finally {
+      setLoading(false);
     }
-
-    const business = await getMyBusiness();
-
-    navigate(business ? "/dashboard" : "/crear-negocio", {
-      replace: true,
-    });
   }
 
   return (
-    <main>
-      <section>
+    <main className="auth-page">
+      <section className="auth-card">
         <h1>Iniciar sesión</h1>
 
-        <form onSubmit={handleSubmit}>
-          <label>
-            Correo electrónico
+        <form onSubmit={handleSubmit} className="auth-form">
+          <label className="field">
+            Usuario
+
             <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              type="text"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              placeholder="admin123"
               required
             />
           </label>
 
-          <label>
+          <label className="field">
             Contraseña
+
             <input
               type="password"
               value={password}
@@ -65,16 +84,15 @@ export default function Login() {
             />
           </label>
 
-          {errorMessage && <p>{errorMessage}</p>}
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
 
           <button type="submit" disabled={loading}>
             {loading ? "Ingresando..." : "Ingresar"}
           </button>
+          <Link className="text-link auth-back" to="/recuperar-contrasena">¿Olvidaste tu contraseña?</Link>
         </form>
 
-        <p>
-          ¿No tenés una cuenta? <Link to="/register">Registrate</Link>
-        </p>
+        <p>El acceso es proporcionado por el administrador.</p>
       </section>
     </main>
   );

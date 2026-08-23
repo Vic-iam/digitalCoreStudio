@@ -1,4 +1,16 @@
-# React + TypeScript + Vite
+# Agenda Negocios
+
+SaaS para administrar clientes, servicios y turnos con React, TypeScript y Supabase.
+
+## Crear usuarios como administrador
+
+La creación de usuarios se realiza mediante `supabase/functions/create-user`, nunca desde el navegador con la `service_role`.
+
+1. Define `VITE_ADMIN_USER_ID` en el `.env` del frontend con el UUID de tu usuario administrador.
+2. Configura `ADMIN_USER_ID` y `SUPABASE_SERVICE_ROLE_KEY` como secretos de la Edge Function.
+3. Despliega la función con `supabase functions deploy create-user`.
+
+El formulario de creación solo se muestra a tu UUID y la función vuelve a validar el permiso en servidor.
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 

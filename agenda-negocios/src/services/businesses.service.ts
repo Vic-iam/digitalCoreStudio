@@ -1,10 +1,12 @@
 import { supabase } from "../lib/supabase";
+import type { Business } from "../types";
 
 export type CreateBusinessData = {
   name: string;
   business_type: string;
   phone?: string;
   address?: string;
+  primary_color?: string;
 };
 
 export async function getMyBusiness() {
@@ -27,7 +29,7 @@ export async function getMyBusiness() {
     throw error;
   }
 
-  return data;
+  return data as Business | null;
 }
 
 export async function createBusiness(
@@ -49,6 +51,7 @@ export async function createBusiness(
       business_type: businessData.business_type,
       phone: businessData.phone || null,
       address: businessData.address || null,
+      primary_color: businessData.primary_color || "#19352d",
     })
     .select()
     .single();
@@ -57,5 +60,5 @@ export async function createBusiness(
     throw error;
   }
 
-  return data;
+  return data as Business;
 }

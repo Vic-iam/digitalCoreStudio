@@ -4,6 +4,7 @@ import {
 } from "react-router";
 
 import { useAuth } from "../../context/AuthContext";
+import { CalendarDays, ChartNoAxesCombined, CircleUserRound, ClipboardList, LogOut, Settings } from "lucide-react";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -25,36 +26,34 @@ export default function Sidebar() {
   }
 
   return (
-    <aside>
-      <h2>Agenda Negocios</h2>
+    <aside className="sidebar">
+      <div className="brand-mark"><CalendarDays size={20} /></div>
+      <div className="brand-copy"><strong>Agenda</strong><span>negocios</span></div>
 
-      <nav>
-        <NavLink to="/dashboard">
-          Dashboard
+      <nav className="sidebar-nav">
+        <NavLink to="/dashboard" className={({ isActive }) => isActive ? "active" : ""}>
+          <ChartNoAxesCombined size={18} /> Dashboard
         </NavLink>
 
-        <NavLink to="/turnos">
-          Turnos
+        <NavLink to="/turnos" className={({ isActive }) => isActive ? "active" : ""}>
+          <CalendarDays size={18} /> Turnos
         </NavLink>
 
-        <NavLink to="/servicios">
-          Servicios
+        <NavLink to="/servicios" className={({ isActive }) => isActive ? "active" : ""}>
+          <ClipboardList size={18} /> Servicios
         </NavLink>
 
-        <NavLink to="/clientes">
-          Clientes
+        <NavLink to="/clientes" className={({ isActive }) => isActive ? "active" : ""}>
+          <CircleUserRound size={18} /> Clientes
         </NavLink>
 
-        <NavLink to="/configuracion">
-          Configuración
+        <NavLink to="/configuracion" className={({ isActive }) => isActive ? "active" : ""}>
+          <Settings size={18} /> Configuración
         </NavLink>
       </nav>
 
-      <button
-        type="button"
-        onClick={handleLogout}
-      >
-        Cerrar sesión
+      <button className="logout-button" type="button" onClick={handleLogout}>
+        <LogOut size={18} /> Cerrar sesión
       </button>
     </aside>
   );

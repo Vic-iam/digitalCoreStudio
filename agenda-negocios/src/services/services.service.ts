@@ -1,4 +1,5 @@
 import { supabase } from "../lib/supabase";
+import type { Service } from "../types";
 
 export async function getServices(businessId: string) {
   const { data, error } = await supabase
@@ -11,18 +12,20 @@ export async function getServices(businessId: string) {
     throw error;
   }
 
-  return data;
+  return (data ?? []) as Service[];
 }
 
 export async function createService(service: {
   business_id: string;
   name: string;
+  description?: string | null;
   duration_minutes: number;
   price: number;
+  active?: boolean;
 }) {
   const { data, error } = await supabase
     .from("services")
-    .insert(service)
+    .insert({ ...service, active: service.active ?? true })
     .select()
     .single();
 
@@ -30,5 +33,5 @@ export async function createService(service: {
     throw error;
   }
 
-  return data;
+  return data as Service;
 }

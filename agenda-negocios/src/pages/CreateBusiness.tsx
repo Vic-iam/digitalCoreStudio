@@ -58,16 +58,16 @@ export default function CreateBusiness() {
   }
 
   return (
-    <main>
-      <section>
+    <main className="auth-page">
+      <section className="auth-card">
         <h1>Configurá tu negocio</h1>
 
         <p>
           Estos datos podrán modificarse después.
         </p>
 
-        <form onSubmit={handleSubmit}>
-          <label>
+        <form onSubmit={handleSubmit} className="auth-form">
+          <label className="field">
             Nombre del negocio
 
             <input
@@ -81,7 +81,7 @@ export default function CreateBusiness() {
             />
           </label>
 
-          <label>
+          <label className="field">
             Tipo de negocio
 
             <select
@@ -118,7 +118,7 @@ export default function CreateBusiness() {
             </select>
           </label>
 
-          <label>
+          <label className="field">
             Teléfono
 
             <input
@@ -130,7 +130,7 @@ export default function CreateBusiness() {
             />
           </label>
 
-          <label>
+          <label className="field">
             Dirección
 
             <input
@@ -142,9 +142,7 @@ export default function CreateBusiness() {
             />
           </label>
 
-          {errorMessage && (
-            <p>{errorMessage}</p>
-          )}
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
 
           <button
             type="submit"
