@@ -4,7 +4,7 @@ import {
 } from "react-router";
 
 import { useAuth } from "../../context/AuthContext";
-import { Banknote, BarChart3, CalendarDays, ChartNoAxesCombined, CircleUserRound, ClipboardList, LogOut } from "lucide-react";
+import { Banknote, BarChart3, CalendarDays, ChartNoAxesCombined, CircleUserRound, ClipboardList, Boxes, LogOut } from "lucide-react";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -49,6 +49,10 @@ export default function Sidebar() {
 
         <NavLink to="/servicios" className={({ isActive }) => isActive ? "active" : ""}>
           <ClipboardList size={18} /> Servicios
+        </NavLink>
+
+        <NavLink to="/inventario" className={({ isActive }) => isActive ? "active" : ""}>
+          <Boxes size={18} /> Inventario
         </NavLink>
 
         <NavLink to="/clientes" className={({ isActive }) => isActive ? "active" : ""}>

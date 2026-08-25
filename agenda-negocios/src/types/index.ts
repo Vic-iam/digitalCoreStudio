@@ -30,6 +30,21 @@ export type Service = {
 	active: boolean;
 };
 
+export type Product = {
+	id: string;
+	business_id: string;
+	name: string;
+	sku: string | null;
+	category: string | null;
+	stock: number;
+	minimum_stock: number;
+	unit: string;
+	cost_price: number;
+	sale_price: number;
+	description: string | null;
+	created_at: string;
+};
+
 export type Appointment = {
 	id: string;
 	business_id: string;

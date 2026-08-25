@@ -14,6 +14,7 @@ import ResetPassword from "./pages/ResetPassword";
 import CashRegister from "./pages/CashRegister";
 import Reports from "./pages/Reports";
 import AdminCreateUser from "./pages/AdminCreateUser.tsx";
+import Inventory from "./pages/Inventory";
 
 function App() {
   return (
@@ -41,6 +42,8 @@ function App() {
               <Route path="/reportes" element={<Reports />} />
 
               <Route path="/servicios" element={<Services />} />
+
+              <Route path="/inventario" element={<Inventory />} />
 
               <Route path="/clientes" element={<Clients />} />
 
