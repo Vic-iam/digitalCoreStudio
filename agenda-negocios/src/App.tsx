@@ -14,6 +14,7 @@ import CreateBusiness from "./pages/CreateBusiness";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import CashRegister from "./pages/CashRegister";
+import Reports from "./pages/Reports";
 
 function App() {
   return (
@@ -35,6 +36,8 @@ function App() {
               <Route path="/turnos" element={<Appointments />} />
 
               <Route path="/caja" element={<CashRegister />} />
+
+              <Route path="/reportes" element={<Reports />} />
 
               <Route path="/servicios" element={<Services />} />
 

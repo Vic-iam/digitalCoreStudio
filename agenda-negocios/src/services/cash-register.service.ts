@@ -44,3 +44,21 @@ export async function deleteCashRegisterEntry(id: string) {
 
   if (error) throw error;
 }
+
+export async function getCashRegisterEntriesBetween(
+  businessId: string,
+  from: string,
+  to: string,
+) {
+  const { data, error } = await supabase
+    .from("cash_register_entries")
+    .select("*")
+    .eq("business_id", businessId)
+    .gte("entry_date", from)
+    .lte("entry_date", to)
+    .order("entry_date")
+    .order("created_at");
+
+  if (error) throw error;
+  return (data ?? []) as CashRegisterEntry[];
+}

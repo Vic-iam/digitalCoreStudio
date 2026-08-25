@@ -4,7 +4,7 @@ import {
 } from "react-router";
 
 import { useAuth } from "../../context/AuthContext";
-import { Banknote, CalendarDays, ChartNoAxesCombined, CircleUserRound, ClipboardList, LogOut, Settings } from "lucide-react";
+import { Banknote, BarChart3, CalendarDays, ChartNoAxesCombined, CircleUserRound, ClipboardList, LogOut, Settings } from "lucide-react";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -41,6 +41,10 @@ export default function Sidebar() {
 
         <NavLink to="/caja" className={({ isActive }) => isActive ? "active" : ""}>
           <Banknote size={18} /> Caja diaria
+        </NavLink>
+
+        <NavLink to="/reportes" className={({ isActive }) => isActive ? "active" : ""}>
+          <BarChart3 size={18} /> Métricas y reportes
         </NavLink>
 
         <NavLink to="/servicios" className={({ isActive }) => isActive ? "active" : ""}>

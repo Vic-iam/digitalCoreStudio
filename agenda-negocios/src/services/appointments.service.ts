@@ -25,3 +25,22 @@ export async function updateAppointmentStatus(id: string, status: Appointment["s
 	if (error) throw error;
 	return data as Appointment;
 }
+
+export async function createAppointment(input: {
+	business_id: string;
+	client_id: string;
+	service_id: string;
+	starts_at: string;
+	ends_at: string;
+	price: number;
+	notes?: string | null;
+}) {
+	const { data, error } = await supabase
+		.from("appointments")
+		.insert({ ...input, status: "pending" })
+		.select("*, client:clients(name, phone), service:services(name, duration_minutes, price)")
+		.single();
+
+	if (error) throw error;
+	return data as Appointment;
+}
