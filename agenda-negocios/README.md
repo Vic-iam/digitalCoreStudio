@@ -2,6 +2,10 @@
 
 SaaS para administrar clientes, servicios y turnos con React, TypeScript y Supabase.
 
+## Caja diaria
+
+Para habilitar la caja, ejecuta `supabase/cash-register.sql` en el SQL Editor de Supabase. La pantalla `/caja` permite registrar el trabajo realizado, importe y medio de pago, con totales diarios por efectivo, transferencia y tarjeta.
+
 ## Crear usuarios como administrador
 
 La creación de usuarios se realiza mediante `supabase/functions/create-user`, nunca desde el navegador con la `service_role`.

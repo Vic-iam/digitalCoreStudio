@@ -13,6 +13,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import CreateBusiness from "./pages/CreateBusiness";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import CashRegister from "./pages/CashRegister";
 
 function App() {
   return (
@@ -32,6 +33,8 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
 
               <Route path="/turnos" element={<Appointments />} />
+
+              <Route path="/caja" element={<CashRegister />} />
 
               <Route path="/servicios" element={<Services />} />
 

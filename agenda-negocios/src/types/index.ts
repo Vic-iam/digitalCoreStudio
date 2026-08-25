@@ -45,3 +45,15 @@ export type Appointment = {
 	client?: Pick<Client, "name" | "phone">;
 	service?: Pick<Service, "name" | "duration_minutes" | "price">;
 };
+
+export type PaymentMethod = "cash" | "transfer" | "card";
+
+export type CashRegisterEntry = {
+	id: string;
+	business_id: string;
+	entry_date: string;
+	description: string;
+	amount: number;
+	payment_method: PaymentMethod;
+	created_at: string;
+};
