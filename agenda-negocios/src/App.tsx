@@ -5,16 +5,15 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import Appointments from "./pages/Appointments";
 import Services from "./pages/Services";
 import Clients from "./pages/Clients";
-import Settings from "./pages/Settings";
 import DashboardLayout from "./layouts/DashboardLayout";
 import CreateBusiness from "./pages/CreateBusiness";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import CashRegister from "./pages/CashRegister";
 import Reports from "./pages/Reports";
+import AdminCreateUser from "./pages/AdminCreateUser";
 
 function App() {
   return (
@@ -29,11 +28,13 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/crear-negocio" element={<CreateBusiness />} />
+            <Route
+              path="/gestion-interna-usuarios-7f3k"
+              element={<AdminCreateUser />}
+            />
 
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
-
-              <Route path="/turnos" element={<Appointments />} />
 
               <Route path="/caja" element={<CashRegister />} />
 
@@ -43,7 +44,6 @@ function App() {
 
               <Route path="/clientes" element={<Clients />} />
 
-              <Route path="/configuracion" element={<Settings />} />
             </Route>
           </Route>
 

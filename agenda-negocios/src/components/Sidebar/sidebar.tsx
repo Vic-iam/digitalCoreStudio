@@ -4,7 +4,7 @@ import {
 } from "react-router";
 
 import { useAuth } from "../../context/AuthContext";
-import { Banknote, BarChart3, CalendarDays, ChartNoAxesCombined, CircleUserRound, ClipboardList, LogOut, Settings } from "lucide-react";
+import { Banknote, BarChart3, CalendarDays, ChartNoAxesCombined, CircleUserRound, ClipboardList, LogOut } from "lucide-react";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -55,9 +55,6 @@ export default function Sidebar() {
           <CircleUserRound size={18} /> Clientes
         </NavLink>
 
-        <NavLink to="/configuracion" className={({ isActive }) => isActive ? "active" : ""}>
-          <Settings size={18} /> Configuración
-        </NavLink>
       </nav>
 
       <button className="logout-button" type="button" onClick={handleLogout}>

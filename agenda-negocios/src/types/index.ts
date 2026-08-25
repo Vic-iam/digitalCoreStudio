@@ -55,5 +55,8 @@ export type CashRegisterEntry = {
 	description: string;
 	amount: number;
 	payment_method: PaymentMethod;
+	client_name: string | null;
+	client_email: string | null;
+	notes: string | null;
 	created_at: string;
 };

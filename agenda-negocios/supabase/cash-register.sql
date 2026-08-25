@@ -5,8 +5,15 @@ create table if not exists public.cash_register_entries (
   description text not null check (char_length(trim(description)) > 0),
   amount numeric(12, 2) not null check (amount > 0),
   payment_method text not null check (payment_method in ('cash', 'transfer', 'card')),
+  client_name text,
+  client_email text,
+  notes text,
   created_at timestamptz not null default now()
 );
+
+alter table public.cash_register_entries add column if not exists client_name text;
+alter table public.cash_register_entries add column if not exists client_email text;
+alter table public.cash_register_entries add column if not exists notes text;
 
 create index if not exists cash_register_entries_business_date_idx
   on public.cash_register_entries (business_id, entry_date, created_at desc);

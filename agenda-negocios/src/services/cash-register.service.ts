@@ -19,6 +19,9 @@ export async function createCashRegisterEntry(input: {
   description: string;
   amount: number;
   paymentMethod: PaymentMethod;
+  clientName?: string | null;
+  clientEmail?: string | null;
+  notes?: string | null;
 }) {
   const { data, error } = await supabase
     .from("cash_register_entries")
@@ -28,6 +31,9 @@ export async function createCashRegisterEntry(input: {
       description: input.description,
       amount: input.amount,
       payment_method: input.paymentMethod,
+      client_name: input.clientName ?? null,
+      client_email: input.clientEmail ?? null,
+      notes: input.notes ?? null,
     })
     .select()
     .single();
