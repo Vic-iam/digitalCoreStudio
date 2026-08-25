@@ -13,7 +13,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import CashRegister from "./pages/CashRegister";
 import Reports from "./pages/Reports";
-import AdminCreateUser from "./pages/AdminCreateUser";
+import AdminCreateUser from "./pages/AdminCreateUser.tsx";
 
 function App() {
   return (
@@ -29,7 +29,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/crear-negocio" element={<CreateBusiness />} />
             <Route
-              path="/gestion-interna-usuarios-7f3k"
+              path="/gestion-interna-usuarios"
               element={<AdminCreateUser />}
             />
 
