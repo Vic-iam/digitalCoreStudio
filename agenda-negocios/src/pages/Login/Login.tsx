@@ -1,9 +1,10 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
-import { supabase } from "../lib/supabase";
-import { getMyBusiness } from "../services/businesses.service";
+import { supabase } from "../../lib/supabase";
+import { getMyBusiness } from "../../services/businesses.service";
 import { Eye, EyeOff } from "lucide-react";
+import styles from "./Style/Login.module.css";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ export default function Login() {
   }
 
   return (
-    <main className="auth-page">
+    <main className={`${styles.page} auth-page`}>
       <section className="auth-card">
         <h1>Iniciar sesión</h1>
 

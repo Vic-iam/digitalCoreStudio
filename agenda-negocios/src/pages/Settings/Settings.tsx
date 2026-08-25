@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { getMyBusiness } from "../services/businesses.service";
-import { createBusinessAccount } from "../services/admin.service";
-import { useAuth } from "../context/AuthContext";
-import type { Business } from "../types";
+import { getMyBusiness } from "../../services/businesses.service";
+import { createBusinessAccount } from "../../services/admin.service";
+import { useAuth } from "../../context/useAuth";
+import type { Business } from "../../types";
+import styles from "./Style/Settings.module.css";
 
 export default function Settings() {
   const [business, setBusiness] = useState<Business | null>(null);
@@ -46,7 +47,7 @@ export default function Settings() {
     }
   }
   return (
-    <section>
+    <section className={styles.page}>
       <header className="page-header">
         <div>
           <p className="eyebrow">Preferencias</p>

@@ -1,14 +1,15 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Banknote, Check, CreditCard, Landmark, Plus, Search, Trash2, UserRound } from "lucide-react";
-import { getMyBusiness } from "../services/businesses.service";
+import { getMyBusiness } from "../../services/businesses.service";
 import {
   createCashRegisterEntry,
   deleteCashRegisterEntry,
   getCashRegisterEntries,
-} from "../services/cash-register.service";
-import type { CashRegisterEntry, PaymentMethod } from "../types";
-import { getServices } from "../services/services.service";
-import type { Service } from "../types";
+} from "../../services/cash-register.service";
+import type { CashRegisterEntry, PaymentMethod } from "../../types";
+import { getServices } from "../../services/services.service";
+import type { Service } from "../../types";
+import styles from "./Style/CashRegister.module.css";
 
 const paymentLabels: Record<PaymentMethod, string> = {
   cash: "Efectivo",
@@ -138,7 +139,7 @@ export default function CashRegister() {
   }
 
   return (
-    <section className="checkout-page">
+    <section className={`${styles.page} checkout-page`}>
       <header className="checkout-header"><div><p className="eyebrow">Terminal de cobro</p><h1>Venta rápida</h1><p>{currentTime.toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long" })} · {currentTime.toLocaleTimeString("es-AR")}</p></div><div className="cashier-identity"><UserRound size={18} /> Administrador</div></header>
       {error && <p className="error-message">{error}</p>}
       <div className="checkout-layout">

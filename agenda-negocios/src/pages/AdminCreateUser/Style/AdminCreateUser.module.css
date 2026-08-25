@@ -1,0 +1,6 @@
+.page {
+  min-height: 100vh;
+}
+.page :global(.auth-card) {
+  border-top: 4px solid #edc85b;
+}

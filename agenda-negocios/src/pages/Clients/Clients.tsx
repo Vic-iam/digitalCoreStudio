@@ -1,7 +1,8 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { getMyBusiness } from "../services/businesses.service";
-import { createClient, getClients } from "../services/clients.service";
-import type { Client } from "../types";
+import { getMyBusiness } from "../../services/businesses.service";
+import { createClient, getClients } from "../../services/clients.service";
+import type { Client } from "../../types";
+import styles from "./Style/Clients.module.css";
 
 export default function Clients() {
   const [clients, setClients] = useState<Client[]>([]);
@@ -52,7 +53,7 @@ export default function Clients() {
     }
   }
   return (
-    <section>
+    <section className={styles.page}>
       <header className="page-header">
         <div>
           <p className="eyebrow">Relaciones</p>

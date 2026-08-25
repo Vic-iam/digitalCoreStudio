@@ -1,7 +1,8 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { getMyBusiness } from "../services/businesses.service";
-import { createService, getServices } from "../services/services.service";
-import type { Service } from "../types";
+import { getMyBusiness } from "../../services/businesses.service";
+import { createService, getServices } from "../../services/services.service";
+import type { Service } from "../../types";
+import styles from "./Style/Services.module.css";
 
 export default function Services() {
   const [services, setServices] = useState<Service[]>([]);
@@ -55,7 +56,7 @@ export default function Services() {
     }
   }
   return (
-    <section>
+    <section className={styles.page}>
       <header className="page-header">
         <div>
           <p className="eyebrow">Catálogo</p>

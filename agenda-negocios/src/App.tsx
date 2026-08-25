@@ -3,18 +3,19 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import Services from "./pages/Services";
-import Clients from "./pages/Clients";
-import DashboardLayout from "./layouts/DashboardLayout";
-import CreateBusiness from "./pages/CreateBusiness";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import CashRegister from "./pages/CashRegister";
-import Reports from "./pages/Reports";
-import AdminCreateUser from "./pages/AdminCreateUser.tsx";
-import Inventory from "./pages/Inventory";
+import Login from "./pages/Login/Login";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Services from "./pages/Services/Services";
+import Clients from "./pages/Clients/Clients";
+import DashboardLayout from "./layouts/DashboardLayout/DashboardLayout";
+import CreateBusiness from "./pages/CreateBusiness/CreateBusiness";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import CashRegister from "./pages/CashRegister/CashRegister";
+import Reports from "./pages/Reports/Reports";
+import AdminCreateUser from "./pages/AdminCreateUser/AdminCreateUser";
+import Inventory from "./pages/Inventory/Inventory";
+import Appointments from "./pages/Appointments/Appointments";
 
 function App() {
   return (
@@ -36,6 +37,8 @@ function App() {
 
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
+
+              <Route path="/turnos" element={<Appointments />} />
 
               <Route path="/caja" element={<CashRegister />} />
 

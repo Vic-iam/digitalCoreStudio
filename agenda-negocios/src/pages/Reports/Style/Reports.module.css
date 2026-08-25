@@ -1,0 +1,2 @@
+.page { width: 100%; }
+.page :global(.report-chart-panel) { min-height: 320px; }

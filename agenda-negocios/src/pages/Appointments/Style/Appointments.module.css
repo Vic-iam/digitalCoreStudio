@@ -1,0 +1,11 @@
+.page {
+  width: 100%;
+}
+.page :global(.schedule-panel) {
+  box-shadow: 0 8px 24px #19352d0b;
+}
+.page :global(.free-slot) {
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}

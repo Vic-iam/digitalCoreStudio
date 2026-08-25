@@ -1,0 +1,9 @@
+.page {
+  width: 100%;
+}
+.page :global(.checkout-total) {
+  box-shadow: inset 0 1px #ffffff12;
+}
+.page :global(.cart-list) {
+  scrollbar-width: thin;
+}

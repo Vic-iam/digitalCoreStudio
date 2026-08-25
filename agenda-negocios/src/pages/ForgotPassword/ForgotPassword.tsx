@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../../lib/supabase";
+import styles from "./Style/ForgotPassword.module.css";
 
 export default function ForgotPassword() {
   const [username, setUsername] = useState("");
@@ -27,5 +28,5 @@ export default function ForgotPassword() {
     }
   }
 
-  return <main className="auth-page"><section className="auth-card"><p className="eyebrow">Acceso</p><h1>Recuperar contraseña</h1><p>Te enviaremos un enlace para crear una nueva.</p><form onSubmit={handleSubmit} className="auth-form"><label className="field">Usuario o email<input value={username} onChange={(event) => setUsername(event.target.value)} placeholder="admin123" required /></label>{error && <p className="error-message">{error}</p>}{message && <p className="success-message">{message}</p>}<button className="button-primary" type="submit" disabled={loading}>{loading ? "Enviando..." : "Enviar enlace"}</button></form><Link className="text-link auth-back" to="/login">Volver al inicio de sesión</Link></section></main>;
+  return <main className={`${styles.page} auth-page`}><section className="auth-card"><p className="eyebrow">Acceso</p><h1>Recuperar contraseña</h1><p>Te enviaremos un enlace para crear una nueva.</p><form onSubmit={handleSubmit} className="auth-form"><label className="field">Usuario o email<input value={username} onChange={(event) => setUsername(event.target.value)} placeholder="admin123" required /></label>{error && <p className="error-message">{error}</p>}{message && <p className="success-message">{message}</p>}<button className="button-primary" type="submit" disabled={loading}>{loading ? "Enviando..." : "Enviar enlace"}</button></form><Link className="text-link auth-back" to="/login">Volver al inicio de sesión</Link></section></main>;
 }

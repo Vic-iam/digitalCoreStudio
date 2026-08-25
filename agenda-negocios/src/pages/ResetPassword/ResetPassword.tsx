@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../../lib/supabase";
+import styles from "./Style/ResetPassword.module.css";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function ResetPassword() {
   }
 
   return (
-    <main className="auth-page">
+    <main className={`${styles.page} auth-page`}>
       <section className="auth-card">
         <p className="eyebrow">Seguridad</p>
         <h1>Nueva contraseña</h1>

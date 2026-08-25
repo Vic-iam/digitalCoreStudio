@@ -5,7 +5,8 @@ import {
 
 import { useNavigate } from "react-router";
 
-import { createBusiness } from "../services/businesses.service";
+import { createBusiness } from "../../services/businesses.service";
+import styles from "./Style/CreateBusiness.module.css";
 
 export default function CreateBusiness() {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ export default function CreateBusiness() {
   }
 
   return (
-    <main className="auth-page">
+    <main className={`${styles.page} auth-page`}>
       <section className="auth-card">
         <h1>Configurá tu negocio</h1>
 

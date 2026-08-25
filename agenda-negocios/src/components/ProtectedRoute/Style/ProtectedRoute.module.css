@@ -1,0 +1,2 @@
+.page { min-height: 100vh; }
+.page :global(.auth-card) { text-align: center; }

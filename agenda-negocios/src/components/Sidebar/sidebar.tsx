@@ -3,7 +3,8 @@ import {
   useNavigate,
 } from "react-router";
 
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/useAuth";
+import styles from "./Style/Sidebar.module.css";
 import { Banknote, BarChart3, CalendarDays, ChartNoAxesCombined, CircleUserRound, ClipboardList, Boxes, LogOut } from "lucide-react";
 
 export default function Sidebar() {
@@ -26,7 +27,7 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="sidebar">
+    <aside className={`${styles.sidebar} sidebar`}>
       <div className="brand-mark"><CalendarDays size={20} /></div>
       <div className="brand-copy"><strong>Agenda</strong><span>negocios</span></div>
 

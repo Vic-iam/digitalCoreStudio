@@ -1,0 +1,2 @@
+.page { width: 100%; }
+.page :global(.settings-panel) { max-width: 760px; }

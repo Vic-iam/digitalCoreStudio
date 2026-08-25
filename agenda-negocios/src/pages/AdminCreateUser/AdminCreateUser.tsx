@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { Navigate } from "react-router";
-import { useAuth } from "../context/AuthContext";
-import { createBusinessAccount } from "../services/admin.service";
+import { useAuth } from "../../context/useAuth";
+import { createBusinessAccount } from "../../services/admin.service";
+import styles from "./Style/AdminCreateUser.module.css";
 
 export default function AdminCreateUser() {
   const { user } = useAuth();
@@ -49,7 +50,7 @@ export default function AdminCreateUser() {
   }
 
   return (
-    <main className="auth-page">
+    <main className={`${styles.page} auth-page`}>
       <section className="auth-card admin-create-page">
         <p className="eyebrow">Gestión interna</p>
         <h1>Crear usuario y negocio</h1>

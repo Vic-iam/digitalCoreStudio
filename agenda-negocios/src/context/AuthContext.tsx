@@ -1,23 +1,8 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
-
-type AuthContextType = {
-  user: User | null;
-  loading: boolean;
-  logout: () => Promise<void>;
-};
-
-const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
-);
+import { AuthContext } from "./auth-context";
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -28,17 +13,17 @@ export function AuthProvider({
 }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [sessionError, setSessionError] = useState("");
 
   useEffect(() => {
     async function loadSession() {
+      setSessionError("");
       const { data, error } =
         await supabase.auth.getSession();
 
       if (error) {
-        console.error(
-          "Error obteniendo la sesión:",
-          error.message
-        );
+        console.error("Error obteniendo la sesión:", error.message);
+        setSessionError("No pudimos verificar tu sesión. Probá nuevamente.");
       }
 
       setUser(data.session?.user ?? null);
@@ -52,6 +37,7 @@ export function AuthProvider({
     } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user ?? null);
+        setSessionError("");
         setLoading(false);
       }
     );
@@ -60,6 +46,17 @@ export function AuthProvider({
       subscription.unsubscribe();
     };
   }, []);
+
+  async function retrySession() {
+    setLoading(true);
+    setSessionError("");
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      setSessionError("No pudimos verificar tu sesión. Probá nuevamente.");
+    }
+    setUser(data.session?.user ?? null);
+    setLoading(false);
+  }
 
   async function logout() {
     const { error } = await supabase.auth.signOut();
@@ -74,6 +71,8 @@ export function AuthProvider({
       value={{
         user,
         loading,
+        sessionError,
+        retrySession,
         logout,
       }}
     >
@@ -82,14 +81,3 @@ export function AuthProvider({
   );
 }
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error(
-      "useAuth debe utilizarse dentro de AuthProvider"
-    );
-  }
-
-  return context;
-}

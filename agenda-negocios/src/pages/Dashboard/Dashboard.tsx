@@ -6,11 +6,12 @@ import {
   ClipboardList,
   ArrowUpRight,
 } from "lucide-react";
-import { getMyBusiness } from "../services/businesses.service";
-import { getAppointments } from "../services/appointments.service";
-import { getClients } from "../services/clients.service";
-import { getServices } from "../services/services.service";
-import type { Appointment, Business, Client, Service } from "../types";
+import { getMyBusiness } from "../../services/businesses.service";
+import { getAppointments } from "../../services/appointments.service";
+import { getClients } from "../../services/clients.service";
+import { getServices } from "../../services/services.service";
+import type { Appointment, Business, Client, Service } from "../../types";
+import styles from "./Style/Dashboard.module.css";
 
 export default function Dashboard() {
   const [business, setBusiness] = useState<Business | null>(null);
@@ -53,7 +54,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <section>
+    <section className={styles.page}>
       <header className="page-header">
         <div>
           <p className="eyebrow">Resumen de actividad</p>
