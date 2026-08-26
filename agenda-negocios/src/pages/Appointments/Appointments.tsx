@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { Fragment, useEffect, useMemo, useState, type FormEvent } from "react";
 import { CalendarPlus, ChevronLeft, ChevronRight, Clock3 } from "lucide-react";
 import { Link } from "react-router";
 import { getMyBusiness } from "../../services/businesses.service";
@@ -462,12 +462,12 @@ export default function Appointments() {
                 );
               })}
               {timeSlots.map((slot) => (
-                <>
-                  <div className="schedule-time" key={`time-${slot}`}>
-                    {slot}
-                  </div>
+                <Fragment key={`slot-${slot}`}>
+                  <div className="schedule-time">{slot}</div>
+
                   {days.map((day) => {
                     const appointment = appointmentAt(day, slot);
+
                     return appointment ? (
                       <button
                         className={`schedule-appointment ${appointment.status}`}
@@ -489,7 +489,7 @@ export default function Appointments() {
                       </button>
                     );
                   })}
-                </>
+                </Fragment>
               ))}
             </div>
           </div>
