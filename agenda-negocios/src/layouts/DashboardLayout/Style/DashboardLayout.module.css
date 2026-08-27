@@ -1,1 +1,32 @@
 .shell { min-height: 100vh; }
+
+.navigationLoader {
+	align-items: center;
+	animation: loaderEnter 180ms ease-out;
+	background: rgba(255, 255, 255, 0.9);
+	color: #19352d;
+	display: flex;
+	gap: 10px;
+	inset: 0;
+	justify-content: center;
+	position: fixed;
+	z-index: 10;
+}
+
+.spinner {
+	animation: spin 700ms linear infinite;
+	border: 3px solid #dce8df;
+	border-radius: 50%;
+	border-top-color: #4f8c67;
+	height: 24px;
+	width: 24px;
+}
+
+@keyframes spin {
+	to { transform: rotate(360deg); }
+}
+
+@keyframes loaderEnter {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}

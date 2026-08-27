@@ -1,10 +1,11 @@
 import { useState, type FormEvent } from "react";
-import { Navigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { useAuth } from "../../context/useAuth";
 import { createBusinessAccount } from "../../services/admin.service";
 import styles from "./Style/AdminCreateUser.module.css";
 
 export default function AdminCreateUser() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const isAdmin = user?.id === import.meta.env.VITE_ADMIN_USER_ID;
   const [email, setEmail] = useState("");
@@ -22,6 +23,17 @@ export default function AdminCreateUser() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setMessage("");
+
+    if (!fullName.trim() || !email.trim() || !password || !businessName.trim()) {
+      setMessage("Completá nombre, email, contraseña y los datos del negocio para continuar.");
+      return;
+    }
+
+    if (password.length < 8) {
+      setMessage("La contraseña debe tener al menos 8 caracteres.");
+      return;
+    }
+
     setLoading(true);
     try {
       const created = await createBusinessAccount({
@@ -33,13 +45,8 @@ export default function AdminCreateUser() {
         phone,
         address,
       });
-      setMessage(`Cuenta creada para ${created.business.name}`);
-      setEmail("");
-      setPassword("");
-      setFullName("");
-      setBusinessName("");
-      setPhone("");
-      setAddress("");
+      window.alert(`Usuario creado correctamente para ${created.business.name}.`);
+      navigate("/login", { replace: true });
     } catch (error) {
       setMessage(
         error instanceof Error ? error.message : "No se pudo crear el usuario",
@@ -62,8 +69,10 @@ export default function AdminCreateUser() {
           <label className="field">
             Nombre completo
             <input
+              type="text"
               value={fullName}
               onChange={(event) => setFullName(event.target.value)}
+              placeholder="Ejemplo: Ana García"
               required
             />
           </label>
@@ -73,6 +82,7 @@ export default function AdminCreateUser() {
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
+              placeholder="ana@ejemplo.com"
               required
             />
           </label>
@@ -83,14 +93,17 @@ export default function AdminCreateUser() {
               minLength={8}
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              placeholder="Mínimo 8 caracteres"
               required
             />
           </label>
           <label className="field">
             Nombre del negocio
             <input
+              type="text"
               value={businessName}
               onChange={(event) => setBusinessName(event.target.value)}
+              placeholder="Ejemplo: Estudio García"
               required
             />
           </label>
@@ -111,15 +124,21 @@ export default function AdminCreateUser() {
           <label className="field">
             Teléfono
             <input
+              type="tel"
               value={phone}
               onChange={(event) => setPhone(event.target.value)}
+              placeholder="Ejemplo: 11 5555 5555"
+              required
             />
           </label>
           <label className="field">
             Dirección
             <input
+              type="text"
               value={address}
               onChange={(event) => setAddress(event.target.value)}
+              placeholder="Ejemplo: Av. Corrientes 1234"
+              required
             />
           </label>
           {message && <p className="form-message">{message}</p>}

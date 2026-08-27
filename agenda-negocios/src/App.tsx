@@ -8,7 +8,6 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Services from "./pages/Services/Services";
 import Clients from "./pages/Clients/Clients";
 import DashboardLayout from "./layouts/DashboardLayout/DashboardLayout";
-import CreateBusiness from "./pages/CreateBusiness/CreateBusiness";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import CashRegister from "./pages/CashRegister/CashRegister";
@@ -29,11 +28,7 @@ function App() {
           <Route path="/restablecer-contrasena" element={<ResetPassword />} />
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/crear-negocio" element={<CreateBusiness />} />
-            <Route
-              path="/gestion-interna-usuarios"
-              element={<AdminCreateUser />}
-            />
+            <Route path="/admin/crear-usuario" element={<AdminCreateUser />} />
 
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />

@@ -71,7 +71,7 @@ export default function Login() {
               type="text"
               value={username}
               onChange={(event) => setUsername(event.target.value)}
-              placeholder="admin123"
+              placeholder="example@dominio.com"
               required
             />
           </label>
