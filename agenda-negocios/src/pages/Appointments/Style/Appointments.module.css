@@ -1,11 +1,97 @@
 .page {
   width: 100%;
 }
+
 .page :global(.schedule-panel) {
   box-shadow: 0 8px 24px #19352d0b;
 }
+
 .page :global(.free-slot) {
   transition:
     border-color 0.2s ease,
     background 0.2s ease;
+}
+
+.selectionCard {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #e6eee6;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #fbfdfb 0%, #f6faf7 100%);
+}
+
+.selectionCard select,
+.quickAddForm input,
+.quickAddForm textarea {
+  width: 100%;
+  border: 1px solid #dbe7de;
+  border-radius: 10px;
+  padding: 11px 12px;
+  background: #fff;
+  color: #17221d;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.selectionCard select:focus,
+.quickAddForm input:focus,
+.quickAddForm textarea:focus {
+  border-color: #39714d;
+  box-shadow: 0 0 0 3px rgba(57, 113, 77, 0.12);
+}
+
+.inlineAddButton,
+.cancelLink {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.inlineAddButton {
+  color: #39714d;
+  font-weight: 700;
+  justify-self: start;
+}
+
+.inlineAddButton:hover,
+.cancelLink:hover {
+  text-decoration: underline;
+}
+
+.quickAddForm {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid #e7efe8;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #f8fbf8 0%, #f2f8f3 100%);
+}
+
+.quickAddGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.quickAddActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+
+.cancelLink {
+  color: #728078;
+  font-weight: 600;
+}
+
+@media (max-width: 540px) {
+  .quickAddGrid {
+    grid-template-columns: 1fr;
+  }
 }

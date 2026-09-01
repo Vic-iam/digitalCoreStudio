@@ -16,7 +16,11 @@ export default function Services() {
     void (async () => {
       try {
         const business = await getMyBusiness();
-        if (business) setServices(await getServices(business.id));
+        if (!business) {
+          setError("No se encontró un negocio activo para este usuario.");
+          return;
+        }
+        setServices(await getServices(business.id));
       } catch (loadError) {
         setError(
           loadError instanceof Error
@@ -30,7 +34,10 @@ export default function Services() {
     event.preventDefault();
     try {
       const business = await getMyBusiness();
-      if (!business) return;
+      if (!business) {
+        setError("No se encontró un negocio activo para este usuario.");
+        return;
+      }
       const service = await createService({
         business_id: business.id,
         name,

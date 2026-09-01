@@ -1,14 +1,13 @@
 import { Fragment, useEffect, useMemo, useState, type FormEvent } from "react";
 import { CalendarPlus, ChevronLeft, ChevronRight, Clock3 } from "lucide-react";
-import { Link } from "react-router";
 import { getMyBusiness } from "../../services/businesses.service";
 import {
   getAppointments,
   createAppointment,
   updateAppointmentStatus,
 } from "../../services/appointments.service";
-import { getClients } from "../../services/clients.service";
-import { getServices } from "../../services/services.service";
+import { createClient, getClients } from "../../services/clients.service";
+import { createService, getServices } from "../../services/services.service";
 import type { Appointment, Client, Service } from "../../types";
 import styles from "./Style/Appointments.module.css";
 
@@ -63,7 +62,27 @@ export default function Appointments() {
   const [serviceId, setServiceId] = useState("");
   const [notes, setNotes] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [isCreatingClient, setIsCreatingClient] = useState(false);
+  const [showClientForm, setShowClientForm] = useState(false);
+  const [newClientName, setNewClientName] = useState("");
+  const [newClientPhone, setNewClientPhone] = useState("");
+  const [newClientEmail, setNewClientEmail] = useState("");
+  const [showServiceForm, setShowServiceForm] = useState(false);
+  const [newServiceName, setNewServiceName] = useState("");
+  const [newServiceDescription, setNewServiceDescription] = useState("");
+  const [newServiceDuration, setNewServiceDuration] = useState("30");
+  const [newServicePrice, setNewServicePrice] = useState("0");
+  const [isCreatingService, setIsCreatingService] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState("");
+  const isSubmitDisabled =
+    isSaving ||
+    services.length === 0 ||
+    clients.length === 0 ||
+    !clientId ||
+    !serviceId ||
+    !formDate ||
+    !formTime;
   const weekStart = useMemo(() => startOfWeek(selectedDate), [selectedDate]);
   const weekEnd = useMemo(() => {
     const end = new Date(weekStart);
@@ -92,7 +111,10 @@ export default function Appointments() {
     void (async () => {
       try {
         const business = await getMyBusiness();
-        if (!business) return;
+        if (!business) {
+          setError("No se encontró un negocio activo para este usuario.");
+          return;
+        }
         const [appointmentList, clientList, serviceList] = await Promise.all([
           getAppointments(
             business.id,
@@ -102,9 +124,12 @@ export default function Appointments() {
           getClients(business.id),
           getServices(business.id),
         ]);
+        const activeServices = serviceList.filter((service) => service.active);
         setAppointments(appointmentList);
         setClients(clientList);
-        setServices(serviceList.filter((service) => service.active));
+        setServices(activeServices);
+        setClientId((current) => current || clientList[0]?.id || "");
+        setServiceId((current) => current || activeServices[0]?.id || "");
       } catch (loadError) {
         setError(
           loadError instanceof Error
@@ -152,14 +177,145 @@ export default function Appointments() {
     setShowForm(true);
   }
 
+  async function handleClientCreate() {
+    const clientName = newClientName.trim();
+    const clientPhone = newClientPhone.trim();
+    const clientEmail = newClientEmail.trim();
+
+    if (!clientName) {
+      setError("Completá el nombre del cliente para continuar.");
+      return;
+    }
+
+    if (!clientPhone && !clientEmail) {
+      setError("Agregá al menos un teléfono o un email para guardar el cliente.");
+      return;
+    }
+
+    if (clientEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail)) {
+      setError("Ingresá un email válido para el cliente.");
+      return;
+    }
+
+    try {
+      setIsCreatingClient(true);
+      setError("");
+      setSuccessMessage("");
+      const business = await getMyBusiness();
+      if (!business) {
+        setError("No se encontró un negocio activo para este usuario.");
+        return;
+      }
+
+      const client = await createClient({
+        business_id: business.id,
+        name: clientName,
+        phone: clientPhone || null,
+        email: clientEmail || null,
+        notes: null,
+      });
+
+      setClients((current) =>
+        [...current, client].sort((a, b) => a.name.localeCompare(b.name)),
+      );
+      setClientId(client.id);
+      setNewClientName("");
+      setNewClientPhone("");
+      setNewClientEmail("");
+      setSuccessMessage(`Cliente creado: ${client.name}`);
+      setShowClientForm(false);
+    } catch (createError) {
+      setError(
+        createError instanceof Error
+          ? createError.message
+          : "No se pudo crear el cliente",
+      );
+    } finally {
+      setIsCreatingClient(false);
+    }
+  }
+
+  async function handleServiceCreate() {
+    const serviceName = newServiceName.trim();
+    const durationMinutes = Number(newServiceDuration);
+    const priceValue = Number(newServicePrice);
+
+    if (!serviceName) {
+      setError("Completá el nombre del servicio para continuar.");
+      return;
+    }
+
+    if (!Number.isFinite(durationMinutes) || durationMinutes <= 0) {
+      setError("La duración del servicio debe ser mayor que 0.");
+      return;
+    }
+
+    if (!Number.isFinite(priceValue) || priceValue < 0) {
+      setError("El precio del servicio no es válido.");
+      return;
+    }
+
+    try {
+      setIsCreatingService(true);
+      setError("");
+      setSuccessMessage("");
+      const business = await getMyBusiness();
+      if (!business) {
+        setError("No se encontró un negocio activo para este usuario.");
+        return;
+      }
+
+      const service = await createService({
+        business_id: business.id,
+        name: serviceName,
+        description: newServiceDescription.trim() || null,
+        duration_minutes: Math.round(durationMinutes),
+        price: Number(priceValue.toFixed(2)),
+        active: true,
+      });
+
+      setServices((current) =>
+        [...current, service].sort((a, b) => a.name.localeCompare(b.name)),
+      );
+      setServiceId(service.id);
+      setNewServiceName("");
+      setNewServiceDescription("");
+      setNewServiceDuration("30");
+      setNewServicePrice("0");
+      setSuccessMessage(`Servicio creado: ${service.name}`);
+      setShowServiceForm(false);
+    } catch (createError) {
+      setError(
+        createError instanceof Error
+          ? createError.message
+          : "No se pudo crear el servicio",
+      );
+    } finally {
+      setIsCreatingService(false);
+    }
+  }
+
   async function handleBooking(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!clientId || !serviceId) {
+      setError("Elegí un cliente y un servicio antes de reservar el turno.");
+      return;
+    }
+
     const service = services.find((item) => item.id === serviceId);
-    if (!service || !clientId) return;
+    if (!service) {
+      setError("El servicio seleccionado no está disponible.");
+      return;
+    }
+
     try {
       setIsSaving(true);
+      setError("");
       const business = await getMyBusiness();
-      if (!business) return;
+      if (!business) {
+        setError("No se encontró un negocio activo para este usuario.");
+        return;
+      }
       const start = new Date(`${formDate}T${formTime}:00`);
       const end = new Date(
         start.getTime() + service.duration_minutes * 60 * 1000,
@@ -249,6 +405,7 @@ export default function Appointments() {
         </div>
       </header>
       {error && <p className="error-message">{error}</p>}
+      {successMessage && <p className="success-message">{successMessage}</p>}
       {showForm && (
         <div
           className="modal-backdrop"
@@ -299,67 +456,196 @@ export default function Appointments() {
             <div className="form-grid">
               <label className="field">
                 Cliente
-                {clients.length === 0 ? (
-                  <span className="field-empty-message">
-                    No hay clientes cargados.
-                    <Link
-                      className="text-link"
-                      to="/clientes"
-                      onClick={() => setShowForm(false)}
+                {!showClientForm && (
+                  <div className={styles.selectionCard}>
+                    {clients.length === 0 ? (
+                      <span className="field-empty-message">
+                        No hay clientes cargados.
+                      </span>
+                    ) : (
+                      <select
+                        value={clientId}
+                        onChange={(event) => setClientId(event.target.value)}
+                        required
+                      >
+                        <option value="">Seleccioná un cliente</option>
+                        {clients.map((client) => (
+                          <option value={client.id} key={client.id}>
+                            {client.name}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                    <button
+                      className={styles.inlineAddButton}
+                      type="button"
+                      onClick={() => setShowClientForm(true)}
                     >
-                      Agregar un cliente
-                    </Link>
-                  </span>
-                ) : (
-                  <>
-                    <select
-                      value={clientId}
-                      onChange={(event) => setClientId(event.target.value)}
-                      required
-                    >
-                      <option value="">Seleccioná un cliente</option>
-                      {clients.map((client) => (
-                        <option value={client.id} key={client.id}>
-                          {client.name}
-                        </option>
-                      ))}
-                    </select>
-                    <Link
-                      className="text-link client-create-link"
-                      to="/clientes"
-                      onClick={() => setShowForm(false)}
-                    >
-                      El cliente no existe, agregar nuevo
-                    </Link>
-                  </>
+                      {clients.length === 0
+                        ? "Agregar un cliente"
+                        : "Nuevo cliente"}
+                    </button>
+                  </div>
+                )}
+                {showClientForm && (
+                  <div className={styles.quickAddForm}>
+                    <div className={styles.quickAddGrid}>
+                      <label className="field">
+                        Nombre
+                        <input
+                          value={newClientName}
+                          onChange={(event) => setNewClientName(event.target.value)}
+                          placeholder="Ej: María López"
+                          required
+                        />
+                      </label>
+                      <label className="field">
+                        Teléfono
+                        <input
+                          type="tel"
+                          value={newClientPhone}
+                          onChange={(event) => setNewClientPhone(event.target.value)}
+                          placeholder="Ej: 11 5555 4444"
+                        />
+                      </label>
+                      <label className="field field-wide">
+                        Email
+                        <input
+                          type="email"
+                          value={newClientEmail}
+                          onChange={(event) => setNewClientEmail(event.target.value)}
+                          placeholder="Ej: maria@email.com"
+                        />
+                      </label>
+                    </div>
+                    <div className={styles.quickAddActions}>
+                      <button
+                        className="button-primary"
+                        type="button"
+                        onClick={() => void handleClientCreate()}
+                        disabled={isCreatingClient}
+                      >
+                        {isCreatingClient ? "Guardando..." : "Guardar cliente"}
+                      </button>
+                      <button
+                        className={styles.cancelLink}
+                        type="button"
+                        onClick={() => {
+                          setShowClientForm(false);
+                          setNewClientName("");
+                          setNewClientPhone("");
+                          setNewClientEmail("");
+                        }}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </div>
                 )}
               </label>
               <label className="field">
-                Motivo
-                {services.length === 0 ? (
-                  <span className="field-empty-message">
-                    No hay servicios cargados.
-                    <Link
-                      className="text-link"
-                      to="/servicios"
-                      onClick={() => setShowForm(false)}
+                Servicio
+                {!showServiceForm && (
+                  <div className={styles.selectionCard}>
+                    {services.length === 0 ? (
+                      <span className="field-empty-message">
+                        No hay servicios cargados.
+                      </span>
+                    ) : (
+                      <select
+                        value={serviceId}
+                        onChange={(event) => setServiceId(event.target.value)}
+                        required
+                      >
+                        <option value="">Seleccioná un servicio</option>
+                        {services.map((service) => (
+                          <option value={service.id} key={service.id}>
+                            {service.name}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                    <button
+                      className={styles.inlineAddButton}
+                      type="button"
+                      onClick={() => setShowServiceForm(true)}
                     >
-                      Agregar un servicio
-                    </Link>
-                  </span>
-                ) : (
-                  <select
-                    value={serviceId}
-                    onChange={(event) => setServiceId(event.target.value)}
-                    required
-                  >
-                    <option value="">Seleccioná un servicio</option>
-                    {services.map((service) => (
-                      <option value={service.id} key={service.id}>
-                        {service.name}
-                      </option>
-                    ))}
-                  </select>
+                      {services.length === 0
+                        ? "Agregar un servicio"
+                        : "Nuevo servicio"}
+                    </button>
+                  </div>
+                )}
+                {showServiceForm && (
+                  <div className={styles.quickAddForm}>
+                    <div className={styles.quickAddGrid}>
+                      <label className="field">
+                        Nombre
+                        <input
+                          value={newServiceName}
+                          onChange={(event) => setNewServiceName(event.target.value)}
+                          placeholder="Ej: Corte + lavado"
+                          required
+                        />
+                      </label>
+                      <label className="field">
+                        Duración (min)
+                        <input
+                          type="number"
+                          min="5"
+                          step="5"
+                          value={newServiceDuration}
+                          onChange={(event) => setNewServiceDuration(event.target.value)}
+                          placeholder="30"
+                          required
+                        />
+                      </label>
+                      <label className="field">
+                        Precio
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={newServicePrice}
+                          onChange={(event) => setNewServicePrice(event.target.value)}
+                          placeholder="2500"
+                          required
+                        />
+                      </label>
+                      <label className="field field-wide">
+                        Descripción
+                        <textarea
+                          rows={2}
+                          value={newServiceDescription}
+                          onChange={(event) => setNewServiceDescription(event.target.value)}
+                          placeholder="Breve detalle del servicio"
+                        />
+                      </label>
+                    </div>
+                    <div className={styles.quickAddActions}>
+                      <button
+                        className="button-primary"
+                        type="button"
+                        onClick={() => void handleServiceCreate()}
+                        disabled={isCreatingService}
+                      >
+                        {isCreatingService ? "Guardando..." : "Guardar servicio"}
+                      </button>
+                      <button
+                        className={styles.cancelLink}
+                        type="button"
+                        onClick={() => {
+                          setShowServiceForm(false);
+                          setNewServiceName("");
+                          setNewServiceDescription("");
+                          setNewServiceDuration("30");
+                          setNewServicePrice("0");
+                        }}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </div>
                 )}
               </label>
               <label className="field">
@@ -394,9 +680,7 @@ export default function Appointments() {
               <button
                 className="button-primary"
                 type="submit"
-                disabled={
-                  isSaving || services.length === 0 || clients.length === 0
-                }
+                disabled={isSubmitDisabled}
               >
                 {isSaving ? "Reservando..." : "Reservar turno"}
               </button>

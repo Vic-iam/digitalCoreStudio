@@ -61,6 +61,24 @@ export type Appointment = {
 	service?: Pick<Service, "name" | "duration_minutes" | "price">;
 };
 
+export type ProfessionalPosition =
+	| "owner"
+	| "manager"
+	| "professional"
+	| "assistant"
+	| "receptionist";
+
+export type Professional = {
+	id: string;
+	business_id: string;
+	name: string;
+	email: string | null;
+	phone: string | null;
+	position: ProfessionalPosition;
+	active: boolean;
+	created_at: string;
+};
+
 export type PaymentMethod = "cash" | "transfer" | "card";
 
 export type CashRegisterEntry = {

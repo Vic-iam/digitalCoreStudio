@@ -12,6 +12,9 @@ export default function CreateBusiness() {
   const [businessType, setBusinessType] = useState("Veterinaria");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -24,7 +27,7 @@ export default function CreateBusiness() {
     setErrorMessage("");
 
     try {
-      const result = await createBusinessAccount({
+      const created = await createBusinessAccount({
         email,
         password,
         fullName,
@@ -34,7 +37,7 @@ export default function CreateBusiness() {
         address,
       });
 
-      console.log("Negocio creado:", business);
+      console.log("Negocio creado:", created.business);
 
       navigate("/dashboard", {
         replace: true,
@@ -56,7 +59,41 @@ export default function CreateBusiness() {
 
         <p>Estos datos podrán modificarse después.</p>
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={(event) => void handleSubmit(event)} className="auth-form">
+          <label className="field">
+            Nombre completo
+            <input
+              type="text"
+              value={fullName}
+              onChange={(event) => setFullName(event.target.value)}
+              placeholder="Ejemplo: Ana García"
+              required
+            />
+          </label>
+
+          <label className="field">
+            Email
+            <input
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="ana@ejemplo.com"
+              required
+            />
+          </label>
+
+          <label className="field">
+            Contraseña
+            <input
+              type="password"
+              minLength={8}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="Mínimo 8 caracteres"
+              required
+            />
+          </label>
+
           <label className="field">
             Nombre del negocio
             <input

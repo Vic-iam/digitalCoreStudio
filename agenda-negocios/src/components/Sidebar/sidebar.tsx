@@ -5,7 +5,7 @@ import {
 
 import { useAuth } from "../../context/useAuth";
 import styles from "./Style/Sidebar.module.css";
-import { Banknote, BarChart3, CalendarDays, ChartNoAxesCombined, CircleUserRound, ClipboardList, Boxes, LogOut } from "lucide-react";
+import { Banknote, BarChart3, CalendarDays, ChartNoAxesCombined, CircleUserRound, ClipboardList, Boxes, LogOut, Users } from "lucide-react";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -50,6 +50,10 @@ export default function Sidebar() {
 
         <NavLink to="/servicios" className={({ isActive }) => isActive ? "active" : ""}>
           <ClipboardList size={18} /> Servicios
+        </NavLink>
+
+        <NavLink to="/profesionales" className={({ isActive }) => isActive ? "active" : ""}>
+          <Users size={18} /> Profesionales
         </NavLink>
 
         <NavLink to="/inventario" className={({ isActive }) => isActive ? "active" : ""}>

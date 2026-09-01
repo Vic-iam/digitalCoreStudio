@@ -95,7 +95,10 @@ export default function Inventory() {
     void (async () => {
       try {
         const business = await getMyBusiness();
-        if (!business) return;
+        if (!business) {
+          setError("No se encontró un negocio activo para este usuario.");
+          return;
+        }
         const [productList, serviceList] = await Promise.all([
           getProducts(business.id),
           getServices(business.id),

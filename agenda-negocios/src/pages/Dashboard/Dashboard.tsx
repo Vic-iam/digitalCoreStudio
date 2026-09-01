@@ -5,18 +5,27 @@ import {
   CircleUserRound,
   ClipboardList,
   ArrowUpRight,
+  Users,
 } from "lucide-react";
 import { getMyBusiness } from "../../services/businesses.service";
 import { getAppointments } from "../../services/appointments.service";
 import { getClients } from "../../services/clients.service";
+import { getProfessionals } from "../../services/professionals.service";
 import { getServices } from "../../services/services.service";
-import type { Appointment, Business, Client, Service } from "../../types";
+import type {
+  Appointment,
+  Business,
+  Client,
+  Professional,
+  Service,
+} from "../../types";
 import styles from "./Style/Dashboard.module.css";
 
 export default function Dashboard() {
   const [business, setBusiness] = useState<Business | null>(null);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
+  const [professionals, setProfessionals] = useState<Professional[]>([]);
   const [services, setServices] = useState<Service[]>([]);
   const [error, setError] = useState("");
 
@@ -30,17 +39,19 @@ export default function Dashboard() {
         start.setHours(0, 0, 0, 0);
         const end = new Date(start);
         end.setDate(end.getDate() + 1);
-        const [today, clientList, serviceList] = await Promise.all([
+        const [today, clientList, professionalList, serviceList] = await Promise.all([
           getAppointments(
             currentBusiness.id,
             start.toISOString(),
             end.toISOString(),
           ),
           getClients(currentBusiness.id),
+          getProfessionals(currentBusiness.id),
           getServices(currentBusiness.id),
         ]);
         setAppointments(today);
         setClients(clientList);
+        setProfessionals(professionalList);
         setServices(serviceList);
       } catch (loadError) {
         setError(
@@ -80,6 +91,12 @@ export default function Dashboard() {
           <div className="stat-note">Base de clientes</div>
         </div>
         <div className="stat-card">
+          <Users size={20} color="#4f8c67" />
+          <div className="stat-label">Equipo</div>
+          <div className="stat-value">{professionals.length}</div>
+          <div className="stat-note">Profesionales activos</div>
+        </div>
+        <div className="stat-card">
           <ClipboardList size={20} color="#4f8c67" />
           <div className="stat-label">Servicios activos</div>
           <div className="stat-value">{services.length}</div>
@@ -90,6 +107,19 @@ export default function Dashboard() {
           <div className="stat-label">Estado</div>
           <div className="stat-value">Activo</div>
           <div className="stat-note">Cuenta operativa</div>
+        </div>
+      </div>
+      <div className="panel">
+        <div className="panel-header">
+          <h2>Acciones rápidas</h2>
+        </div>
+        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+          <Link className="button-primary" to="/profesionales">
+            Gestionar personal
+          </Link>
+          <Link className="text-link" to="/turnos">
+            Ver agenda
+          </Link>
         </div>
       </div>
       <div className="panel">

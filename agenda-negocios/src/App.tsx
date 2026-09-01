@@ -15,6 +15,7 @@ import Reports from "./pages/Reports/Reports";
 import AdminCreateUser from "./pages/AdminCreateUser/AdminCreateUser";
 import Inventory from "./pages/Inventory/Inventory";
 import Appointments from "./pages/Appointments/Appointments";
+import Professionals from "./pages/Professionals/Professionals.tsx";
 
 function App() {
   return (
@@ -38,6 +39,8 @@ function App() {
               <Route path="/caja" element={<CashRegister />} />
 
               <Route path="/reportes" element={<Reports />} />
+            
+              <Route path="/profesionales" element={<Professionals />} />
 
               <Route path="/servicios" element={<Services />} />
 

@@ -59,6 +59,12 @@ set search_path = public
 as $$
   select exists (
     select 1
+    from public.businesses b
+    where b.id = p_business_id
+      and b.owner_id = p_user_id
+  )
+  or exists (
+    select 1
     from public.business_members bm
     where bm.business_id = p_business_id
       and bm.user_id = p_user_id
@@ -77,6 +83,12 @@ stable
 set search_path = public
 as $$
   select exists (
+    select 1
+    from public.businesses b
+    where b.id = p_business_id
+      and b.owner_id = p_user_id
+  )
+  or exists (
     select 1
     from public.business_members bm
     where bm.business_id = p_business_id

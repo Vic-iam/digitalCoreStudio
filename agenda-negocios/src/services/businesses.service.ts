@@ -18,10 +18,38 @@ export async function getMyBusiness() {
     throw new Error("No hay un usuario autenticado");
   }
 
+  const { data: membership, error: membershipError } = await supabase
+    .from("business_members")
+    .select("business_id")
+    .eq("user_id", user.id)
+    .limit(1)
+    .maybeSingle();
+
+  if (membershipError) {
+    throw membershipError;
+  }
+
+  const businessId = membership?.business_id;
+
+  if (!businessId) {
+    const { data, error } = await supabase
+      .from("businesses")
+      .select("*")
+      .eq("owner_id", user.id)
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      throw error;
+    }
+
+    return data as Business | null;
+  }
+
   const { data, error } = await supabase
     .from("businesses")
     .select("*")
-    .eq("owner_id", user.id)
+    .eq("id", businessId)
     .limit(1)
     .maybeSingle();
 

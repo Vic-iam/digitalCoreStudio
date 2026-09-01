@@ -27,9 +27,8 @@ Deno.serve(async (request) => {
     const {
       data: { user: adminUser },
     } = await sessionClient.auth.getUser();
-    if (!adminUser || adminUser.id !== adminUserId) {
+    if (!adminUser || adminUser.id !== adminUserId)
       return json({ error: "No tienes permiso para crear negocios" }, 403);
-    }
 
     const body = await request.json();
     const email = String(body.email ?? "")
